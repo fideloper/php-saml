@@ -19,7 +19,7 @@ class LogoutResponseTest extends \PHPUnit\Framework\TestCase
     /**
      * Initializes the Test Suite
      */
-    public function setUp()
+    public function setUp() : void
     {
         $settingsDir = TEST_ROOT .'/settings/';
         include $settingsDir.'settings1.php';
@@ -172,7 +172,7 @@ class LogoutResponseTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($response2->isValid());
 
         $this->assertFalse($response2->isValid($requestId));
-        $this->assertContains('The InResponseTo of the Logout Response:', $response2->getError());
+        $this->assertStringContainsString('The InResponseTo of the Logout Response:', $response2->getError());
     }
 
     /**
@@ -267,7 +267,7 @@ class LogoutResponseTest extends \PHPUnit\Framework\TestCase
         $this->_settings->setStrict(true);
         $response2 = new LogoutResponse($this->_settings, $message);
         $this->assertFalse($response2->isValid());
-        $this->assertContains('The LogoutResponse was received at', $response2->getError());
+        $this->assertStringContainsString('The LogoutResponse was received at', $response2->getError());
     }
 
     /**
@@ -293,7 +293,7 @@ class LogoutResponseTest extends \PHPUnit\Framework\TestCase
         $this->_settings->setStrict(true);
         $response2 = new LogoutResponse($this->_settings, $_GET['SAMLResponse']);
         $this->assertFalse($response2->isValid());
-        $this->assertContains('Invalid issuer in the Logout Response', $response2->getError());
+        $this->assertStringContainsString('Invalid issuer in the Logout Response', $response2->getError());
 
         $this->_settings->setStrict(false);
         $oldSignature = $_GET['Signature'];
@@ -407,7 +407,7 @@ class LogoutResponseTest extends \PHPUnit\Framework\TestCase
         $this->_settings->setStrict(true);
         $response2 = new LogoutResponse($this->_settings, $message);
         $this->assertFalse($response2->isValid());
-        $this->assertContains('The LogoutResponse was received at', $response2->getError());
+        $this->assertStringContainsString('The LogoutResponse was received at', $response2->getError());
 
         $plainMessage = gzinflate(base64_decode($message));
         $currentURL = Utils::getSelfURLNoQuery();
